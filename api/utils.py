@@ -7,12 +7,10 @@ load_dotenv()
 
 
 def get_db():
-    uri = f"mongodb+srv://ryanpfroug:{os.getenv('MONGO_PASS')}@traderinfo.ogd0i.mongodb.net/?retryWrites=true&w=majority&appName=TraderInfo"
-
-    client = MongoClient(uri, server_api=ServerApi('1'))
-
+    uri = f"mongodb+srv://{os.getenv('MONGO_USER')}:{os.getenv('MONGO_PASS')}@traderinfo.ogd0i.mongodb.net/?retryWrites=true&w=majority&appName=TraderInfo"
+    client = MongoClient(uri)
     try:
-        client.admin.command('ping')
+        client.admin.command("ping")
         print("Pinged your deployment. You successfully connected to MongoDB!")
         return client
     except Exception as e:

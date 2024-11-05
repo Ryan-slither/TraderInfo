@@ -1,8 +1,9 @@
-FROM python:3.8-slim-buster
+FROM python:3.8-alpine
 
 ENV PYTHONUNBUFFERED 1
 
 RUN pip install --upgrade pip
+RUN apk add build-base
 
 COPY ./api/requirements.txt /tmp/requirements.txt
 COPY ./api /api
