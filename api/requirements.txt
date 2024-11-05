@@ -1,0 +1,5 @@
+Django==4.2
+dnspython==2.0.0
+PyMongo
+django-ninja
+python-dotenv

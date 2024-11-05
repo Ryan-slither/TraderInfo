@@ -1,0 +1,41 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    container_name: django-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./api:/api
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_HOST=mongodb
+    env_file:
+      - ./.env
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: react-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - node_modules:/frontend/node_modules
+    environment:
+      - NODE_ENV=development
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+  node_modules:
