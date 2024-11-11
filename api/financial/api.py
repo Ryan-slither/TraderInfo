@@ -23,14 +23,11 @@ def finance_daily(request, symbol: str, test: bool = 0):
             f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={symbol.upper()}&interval=15min&apikey={key}"
         ).json()
 
-    try:
-        if r["Information"]:
-            raise Http404("25 LIMIT REACHED")
+    if len(r) == 1:
+        raise Http404("API Limit Reached")
 
-        if r["Error Message"]:
-            raise Http404("Symbol Not Found")
-    except KeyError:
-        raise Http404("Api Error")
+    if "Error Message" in r:
+        raise Http404("Symbol Not Found")
 
     finance_daily_dict = {}
     finance_daily_dict["symbol"] = r["Meta Data"]["2. Symbol"]
@@ -50,17 +47,17 @@ def finances(request, symbol: str):
         f"https://www.alphavantage.co/query?function=OVERVIEW&symbol={symbol.upper()}&apikey={key}"
     ).json()
 
-    try:
-        if r["Information"]:
-            raise Http404("25 LIMIT REACHED")
+    if len(r) == 1:
+        raise Http404("API Limit Reached")
 
-        if r["Error Message"]:
-            raise Http404("Symbol Not Found")
-
-    except KeyError:
-        raise Http404("Api Error")
+    if "Error Message" in r:
+        raise Http404("Symbol Not Found")
 
     finances_dict = dict(r)
+
+    if not finances_dict:
+        raise Http404("API Error")
+
     finances_dict["Week52High"] = finances_dict["52WeekHigh"]
     del finances_dict["52WeekHigh"]
     finances_dict["Week52Low"] = finances_dict["52WeekLow"]
@@ -69,7 +66,5 @@ def finances(request, symbol: str):
     del finances_dict["50DayMovingAverage"]
     finances_dict["Day200MovingAverage"] = finances_dict["200DayMovingAverage"]
     del finances_dict["200DayMovingAverage"]
-
-    print(finances_dict)
 
     return finances_dict

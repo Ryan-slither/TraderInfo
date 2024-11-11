@@ -8,29 +8,29 @@ class FinancialTest(SimpleTestCase):
         self.maxDiff = None
 
     # COMMENT TO REDUCE API USAGE DAILY 25 LIMIT FOR ALPHA VANTAGE
-    # def test_finance_daily(self):
-    #     client = TestClient(router)
-    #     response = client.get("/finance_daily?symbol=IBM&test=1")
+    def test_finance_daily(self):
+        client = TestClient(router)
+        response = client.get("/finance_daily?symbol=IBM&test=1")
 
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(
-    #         response.json(), {"symbol": "IBM", "close": 51.0345, "volume": 28195508}
-    #     )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(), {"symbol": "IBM", "close": 51.0345, "volume": 28195508}
+        )
 
-    # def test_finance_daily_error(self):
-    #     client = TestClient(router)
-    #     response = client.get("/finance_daily?symbol=IBMMM")
+    def test_finance_daily_error(self):
+        client = TestClient(router)
+        response = client.get("/finance_daily?symbol=IBMMM")
 
-    #     self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
-    # def test_finances(self):
-    #     client = TestClient(router)
-    #     response = client.get("/finances?symbol=IBM")
+    def test_finances(self):
+        client = TestClient(router)
+        response = client.get("/finances?symbol=IBM")
 
-    #     self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
-    # def test_finances_error(self):
-    #     client = TestClient(router)
-    #     response = client.get("/finances?symbol=IBMNA")
+    def test_finances_error(self):
+        client = TestClient(router)
+        response = client.get("/finances?symbol=IBMNA")
 
-    #     self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
