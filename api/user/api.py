@@ -1,5 +1,5 @@
 from ninja import Router
-from .models import UserStock, UserStocks, DeletedSymbol, Success
+from .models import UserStocks, DeletedSymbol, Success
 from utils import get_db
 from django.http import Http404
 from bson.objectid import ObjectId
@@ -14,7 +14,7 @@ def list_stocks(request, id: int):
     pass
 
 
-# DO NOT WORRY ABOUT PASSING USER ID IF YOU DONT HAVE IT YET A NEW DOC WILL BE CREATED
+# DO NOT WORRY ABOUT PASSING USER ID IF YOU DONT HAVE IT A NEW DOC WILL BE CREATED
 @router.post("/create", response={201: Success})
 def insert_stock(request, symbol: str, id: str = "!"):
     if id != "!":

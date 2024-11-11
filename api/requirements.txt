@@ -4,4 +4,3 @@ PyMongo
 django-ninja
 python-dotenv
 requests
-bson
