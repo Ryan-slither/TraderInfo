@@ -3,3 +3,5 @@ dnspython==2.0.0
 PyMongo
 django-ninja
 python-dotenv
+requests
+bson

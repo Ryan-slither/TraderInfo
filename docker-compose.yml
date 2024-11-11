@@ -8,10 +8,6 @@ services:
       - "8000:8000"
     volumes:
       - ./api:/api
-    depends_on:
-      - mongodb
-    environment:
-      - MONGO_HOST=mongodb
     env_file:
       - ./.env
 
@@ -28,14 +24,5 @@ services:
     environment:
       - NODE_ENV=development
 
-  mongodb:
-    image: mongo:latest
-    container_name: mongodb
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
 volumes:
-  mongo_data:
   node_modules:
