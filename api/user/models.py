@@ -8,7 +8,6 @@ class Success(Schema):
 
 
 class UserStock(Schema):
-    userid: str
     symbol: str
     name: str
     price: float

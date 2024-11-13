@@ -16,6 +16,12 @@ class UserTest(SimpleTestCase):
         self.assertEqual(response.json()["message"], "Success")
         self.assertEqual("id" in response.json(), True)
 
+        response = client.get(f"/stocks?id={new_id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual("stocks" in response.json(), True)
+        self.assertEqual(len(response.json()["stocks"]), 1)
+        self.assertEqual(response.json()["stocks"][0]["symbol"], "MMM")
+
         response = client.delete(f"/remove?symbol=MMM&id={new_id}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["symbol"], "MMM")
@@ -29,6 +35,13 @@ class UserTest(SimpleTestCase):
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.json()["message"], "Success")
         self.assertEqual(response.json()["id"], new_id)
+
+        response = client.get(f"/stocks?id={new_id}")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual("stocks" in response.json(), True)
+        self.assertEqual(len(response.json()["stocks"]), 2)
+        self.assertEqual(response.json()["stocks"][0]["symbol"], "GOOG")
+        self.assertEqual(response.json()["stocks"][1]["symbol"], "MMM")
 
         response = client.delete(f"/remove?symbol=MMM&id={new_id}")
         self.assertEqual(response.status_code, 200)
@@ -46,6 +59,9 @@ class UserTest(SimpleTestCase):
         response = client.delete(f"/remove?symbol=MMM&id={new_id}")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["symbol"], "MMM")
+
+        response = client.get(f"/stocks?id={new_id[::-1]}")
+        self.assertEqual(response.status_code, 404)
 
         response = client.delete(f"/remove?symbol=MMM&id={new_id}")
         self.assertEqual(response.status_code, 404)

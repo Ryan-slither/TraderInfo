@@ -10,8 +10,32 @@ client = get_db()
 
 # TO DO
 @router.get("/stocks", response=UserStocks)
-def list_stocks(request, id: int):
-    pass
+def list_stocks(request, id: str):
+    result_symbols = client.app.users.find({"_id": ObjectId(id)})
+    symbols_list = list(result_symbols)
+    if len(symbols_list) == 0:
+        raise Http404("User Not Found")
+    symbols_to_find = symbols_list[0]["symbols"]
+    result_volume = (
+        client.app.stock.find({"Symbol": {"$in": symbols_to_find}})
+        .sort({"Date": -1})
+        .limit(len(symbols_to_find))
+    )
+    result_info = client.app.company.find({"Symbol": {"$in": symbols_to_find}})
+    volume_list = list(result_volume)
+    info_list = list(result_info)
+    return_dict = {}
+    return_dict["stocks"] = []
+    for i in range(len(symbols_to_find)):
+        new_data = {}
+        new_data["symbol"] = volume_list[i]["Symbol"]
+        new_data["volume"] = volume_list[i]["Volume"]
+        new_data["price"] = volume_list[i]["Adj Close"]
+        new_data["marketcap"] = info_list[i]["Marketcap"]
+        new_data["name"] = info_list[i]["Shortname"]
+        return_dict["stocks"].append(new_data)
+
+    return return_dict
 
 
 # DO NOT WORRY ABOUT PASSING USER ID IF YOU DONT HAVE IT A NEW DOC WILL BE CREATED
