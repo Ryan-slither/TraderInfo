@@ -19,7 +19,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/frontend
+      - ./frontend/src:/frontend/src
       - node_modules:/frontend/node_modules
     environment:
       - NODE_ENV=development

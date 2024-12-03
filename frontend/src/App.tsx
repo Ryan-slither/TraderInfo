@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { Search } from 'lucide-react';
-import { StockChart } from './components/StockChart';
-import { TickerCard } from './components/TickerCard';
-import './App.css';
+import { useState, useEffect } from "react";
+import { Search } from "lucide-react";
+import { StockChart } from "./components/StockChart";
+import { TickerCard } from "./components/TickerCard";
+import "./App.css";
 
 interface StockData {
   date: string;
@@ -17,7 +17,7 @@ interface Ticker {
 }
 
 function App() {
-  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTicker, setSelectedTicker] = useState<Ticker | null>(null);
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [stockData, setStockData] = useState<StockData[]>([]);
@@ -33,21 +33,25 @@ function App() {
 
       setLoading(true);
       try {
-        const response = await fetch(`/api/company/symbols?search=${searchQuery}`);
+        const response = await fetch(
+          `/api/company/symbols?search=${searchQuery}`
+        );
         if (response.ok) {
           const data = await response.json();
           // Fetch additional details for each symbol
           const tickersWithDetails = await Promise.all(
             data.symbols.map(async (symbol: string) => {
               try {
-                const symbolResponse = await fetch(`/api/company/symbol?symbol=${symbol}`);
+                const symbolResponse = await fetch(
+                  `/api/company/symbol?symbol=${symbol}`
+                );
                 if (symbolResponse.ok) {
                   const symbolData = await symbolResponse.json();
                   return {
                     symbol: symbolData.symbol,
                     name: symbolData.shortname || symbolData.longname,
                     price: symbolData.currentprice.toFixed(2),
-                    change: '+0.00%' // You'll need to calculate this from historical data
+                    change: "+0.00%", // You'll need to calculate this from historical data
                   };
                 }
                 return null;
@@ -61,7 +65,7 @@ function App() {
           setTickers(tickersWithDetails.filter(Boolean));
         }
       } catch (error) {
-        console.error('Error fetching symbols:', error);
+        console.error("Error fetching symbols:", error);
       } finally {
         setLoading(false);
       }
@@ -79,13 +83,17 @@ function App() {
         const response = await fetch(`/api/stock?symbol=${symbol}`);
         if (response.ok) {
           const data = await response.json();
-          setStockData(data.data.map((item: any) => ({
-            date: item.date,
-            value: parseFloat(item.close)
-          })));
+          setStockData(
+            // PLEASE FIX THIS LATER
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            data.data.map((item: any) => ({
+              date: item.date,
+              value: parseFloat(item.close),
+            }))
+          );
         }
       } catch (error) {
-        console.error('Error fetching stock data:', error);
+        console.error("Error fetching stock data:", error);
       }
     };
 
@@ -107,10 +115,7 @@ function App() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <Search
-              className="search-icon cursor-pointer"
-              size={20}
-            />
+            <Search className="search-icon cursor-pointer" size={20} />
           </div>
           <button className="about-button">About</button>
         </div>
@@ -150,9 +155,13 @@ function App() {
               </div>
               <div className="stock-info">
                 <span className="stock-price">${selectedTicker.price}</span>
-                <span className={`stock-change ${
-                  selectedTicker.change.startsWith('+') ? 'positive-change' : 'negative-change'
-                }`}>
+                <span
+                  className={`stock-change ${
+                    selectedTicker.change.startsWith("+")
+                      ? "positive-change"
+                      : "negative-change"
+                  }`}
+                >
                   {selectedTicker.change}
                 </span>
               </div>
