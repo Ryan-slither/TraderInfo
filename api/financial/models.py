@@ -18,12 +18,12 @@ class Finances(Schema):
     Industry: str
     OfficialSite: str
     MarketCapitalization: float
-    EBITDA: Optional[float] = None
+    EBITDA: Optional[str] = None
     PERatio: float
     PEGRatio: float
     BookValue: float
-    DividendPerShare: Optional[float] = None
-    DividendYield: Optional[float] = None
+    DividendPerShare: Optional[str] = None
+    DividendYield: Optional[str] = None
     EPS: float
     ProfitMargin: float
     RevenueTTM: float
