@@ -1,4 +1,5 @@
 from ninja import Schema
+from typing import Optional
 
 
 class Financial_Daily(Schema):
@@ -17,7 +18,7 @@ class Finances(Schema):
     Industry: str
     OfficialSite: str
     MarketCapitalization: float
-    EBITDA: float
+    EBITDA: Optional[float] = None
     PERatio: float
     PEGRatio: float
     BookValue: float

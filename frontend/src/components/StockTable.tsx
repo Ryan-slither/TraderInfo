@@ -12,8 +12,8 @@ interface StockTableTypes {
 
 export const StockTable = () => {
   const [stocks, setStocks] = useState<StockTableTypes[]>([]);
-  //const [sortMethod, setSortMethod] = useState(0);
-  //const [sortCurrent, setSortCurrent] = useState("");
+  const [sortMethod, _setSortMethod] = useState(0);
+  const [_sortCurrent, _setSortCurrent] = useState("");
 
   useEffect(() => {
     console.log("FUTURE API CALL");
@@ -47,6 +47,16 @@ export const StockTable = () => {
     console.log("sort");
   };
 
+  const getArrow = () => {
+    if (sortMethod == 0) {
+      return '↑ ↓'
+    } else if (sortMethod == 1) {
+      return '↑  '
+    } else {
+      return '  ↓'
+    }
+  }
+
   return (
     <>
       <div className="table-container">
@@ -54,19 +64,19 @@ export const StockTable = () => {
         <div className="table-rows">
           <div className="table-headers">
             <div className="header" onClick={setSorted}>
-              ticker ↑ ↓
+              ticker {getArrow()}
             </div>
             <div className="header" onClick={setSorted}>
-              volume ↑ ↓
+              volume {getArrow()}
             </div>
             <div className="header" onClick={setSorted}>
-              market cap ↑ ↓
+              market cap {getArrow()}
             </div>
             <div className="header" onClick={setSorted}>
-              high ↑ ↓
+              high {getArrow()}
             </div>
             <div className="header" onClick={setSorted}>
-              price ↑ ↓
+              price {getArrow()}
             </div>
           </div>
           {stocks.map((stock, index) => {
