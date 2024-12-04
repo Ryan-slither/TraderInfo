@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
-import { StockTable } from "./components/StockTable";
+import { StockTable} from "./components/StockTable";
 import "./App.css";
 
 interface StockData {
@@ -179,8 +179,8 @@ function App() {
     <div className="app-container">
       <nav className="navbar">
         <div className="navbar-content">
-          <h1
-            className="logo cursor-pointer"
+          <h1 
+            className="logo cursor-pointer" 
             onClick={handleReset}
           >
             TraderInfo
@@ -195,7 +195,7 @@ function App() {
             />
             <Search className="search-icon cursor-pointer" size={20} />
           </div>
-          <button
+          <button 
             className="about-button"
             onClick={() => {
               setShowAbout(true);
@@ -207,7 +207,9 @@ function App() {
           </button>
         </div>
       </nav>
+      
       {<StockTable/>}
+
       <main className="main-content">
         {showAbout ? (
           <AboutPage />
