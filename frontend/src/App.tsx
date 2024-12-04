@@ -14,7 +14,6 @@ interface Ticker {
   symbol: string;
   name: string;
   price: string;
-  change: string;
 }
 
 function App() {
@@ -159,15 +158,6 @@ function App() {
               </div>
               <div className="stock-info">
                 <span className="stock-price">${selectedTicker.price}</span>
-                <span
-                  className={`stock-change ${
-                    selectedTicker.change.startsWith("+")
-                      ? "positive-change"
-                      : "negative-change"
-                  }`}
-                >
-                  {selectedTicker.change}
-                </span>
               </div>
               <div className="chart-container">
                 <StockChart data={stockData} />

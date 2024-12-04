@@ -5,7 +5,6 @@ interface Ticker {
  symbol: string;
  name: string;
  price: string;
- change: string;
 }
 
 
@@ -13,7 +12,6 @@ interface TickerCardProps {
  ticker: Ticker;
  onClick: (ticker: Ticker) => void;
 }
-
 
 export const TickerCard = ({ ticker, onClick }: TickerCardProps) => {
  return (
