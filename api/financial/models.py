@@ -22,8 +22,8 @@ class Finances(Schema):
     PERatio: float
     PEGRatio: float
     BookValue: float
-    DividendPerShare: float
-    DividendYield: float
+    DividendPerShare: Optional[float] = None
+    DividendYield: Optional[float] = None
     EPS: float
     ProfitMargin: float
     RevenueTTM: float
@@ -42,5 +42,5 @@ class Finances(Schema):
     Day50MovingAverage: float
     Day200MovingAverage: float
     SharesOutstanding: int
-    DividendDate: str
-    ExDividendDate: str
+    DividendDate: Optional[str] = None
+    ExDividendDate: Optional[str] = None
