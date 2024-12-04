@@ -86,6 +86,7 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           setStockData(
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data.data.map((item: any) => ({
               date: item.date,
               value: parseFloat(item.close),
@@ -137,8 +138,8 @@ function App() {
     <div className="app-container">
       <nav className="navbar">
         <div className="navbar-content">
-          <h1 
-            className="logo cursor-pointer" 
+          <h1
+            className="logo cursor-pointer"
             onClick={handleReset}
           >
             TraderInfo
@@ -153,7 +154,7 @@ function App() {
             />
             <Search className="search-icon cursor-pointer" size={20} />
           </div>
-          <button 
+          <button
             className="about-button"
             onClick={() => {
               setShowAbout(true);
