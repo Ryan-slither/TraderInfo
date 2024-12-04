@@ -13,44 +13,62 @@ interface StockTableTypes {
 
 const quickSort = <T,>(array: T[], key: keyof T): T[] => {
   if (array.length <= 1) return array;
-  const pivot = array[array.length - 1];
+
+  const pivotIndex = Math.floor(array.length / 2);
+  const pivot = array[pivotIndex];
+
   const left: T[] = [];
   const right: T[] = [];
-  for (let i = 0; i < array.length - 1; i++) {
+
+  for (let i = 0; i < array.length; i++) {
+    if (i === pivotIndex) continue;
     if (array[i][key] < pivot[key]) {
       left.push(array[i]);
     } else {
       right.push(array[i]);
     }
   }
+
   return [...quickSort(left, key), pivot, ...quickSort(right, key)];
 };
 
 const heapSort = <T,>(array: T[], key: keyof T): T[] => {
   const n = array.length;
-  const heapify = (arr: T[], n: number, i: number) => {
-    let largest = i;
-    const left = 2 * i + 1;
-    const right = 2 * i + 2;
-    if (left < n && arr[left][key] > arr[largest][key]) {
-      largest = left;
-    }
-    if (right < n && arr[right][key] > arr[largest][key]) {
-      largest = right;
-    }
-    if (largest !== i) {
-      [arr[i], arr[largest]] = [arr[largest], arr[i]];
-      heapify(arr, n, largest);
-    }
-  };
+
   for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
-    heapify(array, n, i);
+    heapify(array, n, i, key);
   }
+
   for (let i = n - 1; i > 0; i--) {
     [array[0], array[i]] = [array[i], array[0]];
-    heapify(array, i, 0);
+    heapify(array, i, 0, key);
   }
+
   return array;
+};
+
+const heapify = <T,>(
+  array: T[],
+  heapSize: number,
+  rootIndex: number,
+  key: keyof T
+): void => {
+  let largest = rootIndex;
+  const leftChild = 2 * rootIndex + 1;
+  const rightChild = 2 * rootIndex + 2;
+
+  if (leftChild < heapSize && array[leftChild][key] > array[largest][key]) {
+    largest = leftChild;
+  }
+
+  if (rightChild < heapSize && array[rightChild][key] > array[largest][key]) {
+    largest = rightChild;
+  }
+
+  if (largest !== rootIndex) {
+    [array[rootIndex], array[largest]] = [array[largest], array[rootIndex]];
+    heapify(array, heapSize, largest, key);
+  }
 };
 
 export const StockTable = () => {
@@ -133,14 +151,34 @@ export const StockTable = () => {
     }
   };
 
+  const getPerformanceMessage = () => {
+    if (quickSortTime > heapSortTime) {
+      const percentDifference = (
+        ((quickSortTime - heapSortTime) / quickSortTime) *
+        100
+      ).toFixed(2);
+      return `Heap Sort is faster by ${percentDifference}%`;
+    } else if (heapSortTime > quickSortTime) {
+      const percentDifference = (
+        ((heapSortTime - quickSortTime) / heapSortTime) *
+        100
+      ).toFixed(2);
+      return `Quick Sort is faster by ${percentDifference}%`;
+    } else {
+      return "Both sorting algorithms have the same performance";
+    }
+  };
+
   return (
     <>
       <div className="table-container">
         <div className="table-title">Stocks</div>
         <div className="sort-times">
           <div>Quick Sort Time: {quickSortTime.toFixed(5)} ms</div>
+          <div>{getPerformanceMessage()}</div>
           <div>Heap Sort Time: {heapSortTime.toFixed(5)} ms</div>
         </div>
+
         <div className="table-rows">
           <div className="table-headers">
             <div className="header" id="ticker" onClick={setSorted}>
