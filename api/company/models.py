@@ -1,5 +1,5 @@
 from ninja import Schema
-from typing import List
+from typing import List, Optional
 
 
 class Symbols(Schema):
@@ -15,7 +15,7 @@ class Symbol(Schema):
     industry: str
     currentprice: float
     marketcap: int
-    ebitda: int
+    ebitda: Optional[int] = None
     revenuegrowth: float
     city: str
     state: str

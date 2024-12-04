@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
 import "./App.css";
+import { StockTable } from "./components/StockTable";
 
 interface StockData {
   date: string;
@@ -79,7 +80,9 @@ function App() {
   useEffect(() => {
     const fetchStockData = async (symbol: string) => {
       try {
-        const response = await fetch(`http://localhost:8000//api/stock?symbol=${symbol}`);
+        const response = await fetch(
+          `http://localhost:8000//api/stock?symbol=${symbol}`
+        );
         if (response.ok) {
           const data = await response.json();
           setStockData(
@@ -119,6 +122,8 @@ function App() {
           <button className="about-button">About</button>
         </div>
       </nav>
+
+      <StockTable />
 
       <main className="main-content">
         {loading ? (
