@@ -145,11 +145,20 @@
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.stock-info{
+  margin-bottom: 1rem;
+}
+
+.stock-price {
+  font-size: 1.5rem;
+  margin: 0;
+  color: black;
+}
+
 .detail-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
 }
 
 .back-button {
@@ -181,11 +190,19 @@
   border-bottom: 1px solid #e5e7eb;
 }
 
+.stat-header{
+  font-size: x-large;
+  font-weight: bold;
+  mb: 4rem;
+  color: black;
+}
+
 .stat-label {
   color: #6b7280;
 }
 
 .stat-value {
+  color: black;
   font-weight: 500;
 }
 
@@ -208,4 +225,10 @@
   .search-container {
     width: 100%;
   }
+}
+
+.main-content-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: black;
 }

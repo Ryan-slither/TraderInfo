@@ -122,7 +122,7 @@ function App() {
         </div>
       </nav>
 
-      <StockTable />
+      {/*<StockTable />*/}
 
       <main className="main-content">
         {loading ? (
@@ -145,8 +145,8 @@ function App() {
         ) : (
           <div className="detail-view">
             <div className="stock-detail-card">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold">
+              <div className="detail-header">
+                <h2 className="main-content-title">
                   {selectedTicker.symbol} - {selectedTicker.name}
                 </h2>
                 <button
@@ -165,7 +165,7 @@ function App() {
             </div>
 
             <div className="stock-detail-card">
-              <h3 className="text-xl font-bold mb-4">Key Statistics</h3>
+              <h3 className="stat-header">Key Statistics</h3>
               <div className="stats-container">
                 <div className="stat-row">
                   <span className="stat-label">Market Cap</span>
