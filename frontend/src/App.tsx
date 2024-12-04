@@ -16,11 +16,24 @@ interface Ticker {
   price: string;
 }
 
+interface FinancialData {
+  Symbol: string;
+  MarketCapitalization: number;
+  PERatio: number;
+  Week52High: number;
+  Week52Low: number;
+  DividendYield: number;
+  Beta: number;
+  EPS: number;
+  ProfitMargin: number;
+}
+
 function App() {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectedTicker, setSelectedTicker] = useState<Ticker | null>(null);
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [stockData, setStockData] = useState<StockData[]>([]);
+  const [financialData, setFinancialData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
 
@@ -76,21 +89,31 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
-  // Fetch stock details when a ticker is selected
+  // Fetch stock details and financial data when a ticker is selected
   useEffect(() => {
     const fetchStockData = async (symbol: string) => {
       try {
-        const response = await fetch(
+        // Fetch chart data
+        const chartResponse = await fetch(
           `http://localhost:8000//api/stock?symbol=${symbol}`
         );
-        if (response.ok) {
-          const data = await response.json();
+        if (chartResponse.ok) {
+          const chartData = await chartResponse.json();
           setStockData(
-            data.data.map((item: any) => ({
+            chartData.data.map((item: any) => ({
               date: item.date,
               value: parseFloat(item.close),
             }))
           );
+        }
+
+        // Fetch financial data
+        const financialResponse = await fetch(
+          `http://localhost:8000/api/financial/finances?symbol=${symbol}`
+        );
+        if (financialResponse.ok) {
+          const data = await financialResponse.json();
+          setFinancialData(data);
         }
       } catch (error) {
         console.error("Error fetching stock data:", error);
@@ -99,8 +122,26 @@ function App() {
 
     if (selectedTicker) {
       fetchStockData(selectedTicker.symbol);
+    } else {
+      setFinancialData(null);
     }
   }, [selectedTicker]);
+
+  const formatMarketCap = (marketCap: number) => {
+    if (marketCap >= 1e12) {
+      return `$${(marketCap / 1e12).toFixed(2)}T`;
+    } else if (marketCap >= 1e9) {
+      return `$${(marketCap / 1e9).toFixed(2)}B`;
+    } else if (marketCap >= 1e6) {
+      return `$${(marketCap / 1e6).toFixed(2)}M`;
+    } else {
+      return `$${marketCap.toFixed(2)}`;
+    }
+  };
+
+  const formatPercentage = (value: number) => {
+    return `${(value * 100).toFixed(2)}%`;
+  };
 
   const handleReset = () => {
     setSearchQuery("");
@@ -120,6 +161,7 @@ function App() {
         </p>
         <p>
           Features:<br />
+          • Real-time stock price tracking<br />
           • Historical price data visualization<br />
           • Company information and key statistics<br />
           • User-friendly search interface
@@ -165,9 +207,7 @@ function App() {
           </button>
         </div>
       </nav>
-
       {<StockTable/>}
-
       <main className="main-content">
         {showAbout ? (
           <AboutPage />
@@ -213,22 +253,60 @@ function App() {
             <div className="stock-detail-card">
               <h3 className="stat-header">Key Statistics</h3>
               <div className="stats-container">
-                <div className="stat-row">
-                  <span className="stat-label">Market Cap</span>
-                  <span className="stat-value">$2.84T</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">P/E Ratio</span>
-                  <span className="stat-value">28.92</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">52 Week High</span>
-                  <span className="stat-value">$182.34</span>
-                </div>
-                <div className="stat-row">
-                  <span className="stat-label">52 Week Low</span>
-                  <span className="stat-value">$124.17</span>
-                </div>
+                {financialData ? (
+                  <>
+                    <div className="stat-row">
+                      <span className="stat-label">Market Cap</span>
+                      <span className="stat-value">
+                        {formatMarketCap(financialData.MarketCapitalization)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">P/E Ratio</span>
+                      <span className="stat-value">
+                        {financialData.PERatio.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">52 Week High</span>
+                      <span className="stat-value">
+                        ${financialData.Week52High.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">52 Week Low</span>
+                      <span className="stat-value">
+                        ${financialData.Week52Low.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">Dividend Yield</span>
+                      <span className="stat-value">
+                        {formatPercentage(financialData.DividendYield)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">Beta</span>
+                      <span className="stat-value">
+                        {financialData.Beta.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">EPS</span>
+                      <span className="stat-value">
+                        ${financialData.EPS.toFixed(2)}
+                      </span>
+                    </div>
+                    <div className="stat-row">
+                      <span className="stat-label">Profit Margin</span>
+                      <span className="stat-value">
+                        {formatPercentage(financialData.ProfitMargin)}
+                      </span>
+                    </div>
+                  </>
+                ) : (
+                  <div className="text-center p-4">Loading statistics...</div>
+                )}
               </div>
             </div>
           </div>
