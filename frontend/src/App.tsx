@@ -3,7 +3,6 @@ import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
 import "./App.css";
-//import { StockTable } from "./components/StockTable";
 
 interface StockData {
   date: string;
@@ -22,6 +21,7 @@ function App() {
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [stockData, setStockData] = useState<StockData[]>([]);
   const [loading, setLoading] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
 
   // Fetch symbols as user types
   useEffect(() => {
@@ -85,8 +85,6 @@ function App() {
         if (response.ok) {
           const data = await response.json();
           setStockData(
-            // PLEASE FIX THIS LATER
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             data.data.map((item: any) => ({
               date: item.date,
               value: parseFloat(item.close),
@@ -103,11 +101,48 @@ function App() {
     }
   }, [selectedTicker]);
 
+  const handleReset = () => {
+    setSearchQuery("");
+    setSelectedTicker(null);
+    setShowAbout(false);
+  };
+
+  const AboutPage = () => (
+    <div className="about-page">
+      <h2 className="about-title">About TraderInfo</h2>
+      <div className="about-content">
+        <p>
+          TraderInfo is a comprehensive stock market information platform that provides
+          real-time stock data and analysis tools for investors. Our platform integrates
+          data from Alpha Vantage API and historical S&P 500 stock data to give you
+          accurate and timely market insights.
+        </p>
+        <p>
+          Features:<br />
+          • Real-time stock price tracking<br />
+          • Historical price data visualization<br />
+          • Company information and key statistics<br />
+          • User-friendly search interface
+        </p>
+        <p>
+          Built with modern technologies including React, Node.js, MongoDB, and Docker,
+          TraderInfo aims to provide a seamless experience for both novice and
+          experienced investors.
+        </p>
+      </div>
+    </div>
+  );
+
   return (
     <div className="app-container">
       <nav className="navbar">
         <div className="navbar-content">
-          <h1 className="logo">TraderInfo</h1>
+          <h1 
+            className="logo cursor-pointer" 
+            onClick={handleReset}
+          >
+            TraderInfo
+          </h1>
           <div className="search-container">
             <input
               type="text"
@@ -118,14 +153,23 @@ function App() {
             />
             <Search className="search-icon cursor-pointer" size={20} />
           </div>
-          <button className="about-button">About</button>
+          <button 
+            className="about-button"
+            onClick={() => {
+              setShowAbout(true);
+              setSelectedTicker(null);
+              setSearchQuery("");
+            }}
+          >
+            About
+          </button>
         </div>
       </nav>
 
-      {/*<StockTable />*/}
-
       <main className="main-content">
-        {loading ? (
+        {showAbout ? (
+          <AboutPage />
+        ) : loading ? (
           <div className="text-center p-4">Loading...</div>
         ) : !selectedTicker ? (
           <div className="stock-list">

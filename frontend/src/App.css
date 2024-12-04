@@ -4,6 +4,40 @@
   background-color: #f3f4f6;
 }
 
+.logo {
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.logo:hover {
+  opacity: 0.8;
+}
+
+.about-page {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.about-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+}
+
+.about-content {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #666;
+}
+
+.about-content p {
+  margin-bottom: 1rem;
+}
+
 .navbar {
   background-color: #1f2937;
   padding: 1rem;
