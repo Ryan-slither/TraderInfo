@@ -1,0 +1,66 @@
+.mag-seven-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .mag-seven-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1a202c;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  
+  .stock-blocks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+  
+  .stock-block {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+  }
+  
+  .stock-block:hover {
+    transform: translateY(-4px);
+  }
+  
+  .stock-header {
+    padding: 1rem;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .stock-symbol {
+    font-size: 1.25rem;
+  }
+  
+  .stock-content {
+    padding: 1rem;
+  }
+  
+  .stock-name {
+    font-size: 0.875rem;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stock-price {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2d3748;
+    margin-bottom: 0.5rem;
+  }
+  
+  .loading-message {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.125rem;
+    color: #4a5568;
+  }

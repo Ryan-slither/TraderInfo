@@ -3,6 +3,8 @@ import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
 import { StockTable } from "./components/StockTable";
+import { MagnificentSeven } from "./components/MagnificentSeven";
+
 import "./App.css";
 
 interface StockData {
@@ -247,18 +249,24 @@ function App() {
         ) : loading ? (
           <div className="text-center p-4">Loading...</div>
         ) : !selectedTicker ? (
-          <div className="stock-list">
-            {tickers.map((ticker) => (
-              <TickerCard
-                key={ticker.symbol}
-                ticker={ticker}
-                onClick={setSelectedTicker}
-              />
-            ))}
-            {searchQuery && tickers.length === 0 && (
-              <div className="loading-message">
-                No results found for "{searchQuery}"
+          <div>
+            {searchQuery ? (
+              <div className="stock-list">
+                {tickers.map((ticker) => (
+                  <TickerCard
+                    key={ticker.symbol}
+                    ticker={ticker}
+                    onClick={setSelectedTicker}
+                  />
+                ))}
+                {tickers.length === 0 && (
+                  <div className="loading-message">
+                    No results found for "{searchQuery}"
+                  </div>
+                )}
               </div>
+            ) : (
+              <MagnificentSeven onSelectStock={setSelectedTicker} />
             )}
           </div>
         ) : (
