@@ -4,3 +4,4 @@ PyMongo
 django-ninja
 python-dotenv
 requests
+django-cors-headers

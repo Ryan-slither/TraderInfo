@@ -34,7 +34,7 @@ function App() {
       setLoading(true);
       try {
         const response = await fetch(
-          `/api/company/symbols?search=${searchQuery}`
+          `http://localhost:8000/api/company/symbols?search=${searchQuery}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -43,7 +43,7 @@ function App() {
             data.symbols.map(async (symbol: string) => {
               try {
                 const symbolResponse = await fetch(
-                  `/api/company/symbol?symbol=${symbol}`
+                  `http://localhost:8000//api/company/symbol?symbol=${symbol}`
                 );
                 if (symbolResponse.ok) {
                   const symbolData = await symbolResponse.json();
@@ -51,7 +51,6 @@ function App() {
                     symbol: symbolData.symbol,
                     name: symbolData.shortname || symbolData.longname,
                     price: symbolData.currentprice.toFixed(2),
-                    change: "+0.00%", // You'll need to calculate this from historical data
                   };
                 }
                 return null;
@@ -80,7 +79,7 @@ function App() {
   useEffect(() => {
     const fetchStockData = async (symbol: string) => {
       try {
-        const response = await fetch(`/api/stock?symbol=${symbol}`);
+        const response = await fetch(`http://localhost:8000//api/stock?symbol=${symbol}`);
         if (response.ok) {
           const data = await response.json();
           setStockData(
@@ -134,7 +133,7 @@ function App() {
               />
             ))}
             {searchQuery && tickers.length === 0 && (
-              <div className="text-center p-4 text-gray-500">
+              <div className="loading-message">
                 No results found for "{searchQuery}"
               </div>
             )}

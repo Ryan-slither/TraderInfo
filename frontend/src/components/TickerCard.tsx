@@ -25,11 +25,6 @@ export const TickerCard = ({ ticker, onClick }: TickerCardProps) => {
        </div>
        <div className="ticker-price-info">
          <p className="ticker-price">${ticker.price}</p>
-         <p className={`ticker-change ${
-           ticker.change.startsWith('+') ? 'positive' : 'negative'
-         }`}>
-           {ticker.change}
-         </p>
        </div>
      </div>
    </div>
