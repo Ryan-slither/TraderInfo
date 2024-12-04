@@ -23,6 +23,7 @@ services:
       - node_modules:/frontend/node_modules
     environment:
       - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
 
 volumes:
   node_modules:
