@@ -3,7 +3,7 @@ import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
 import "./App.css";
-import { StockTable } from "./components/StockTable";
+//import { StockTable } from "./components/StockTable";
 
 interface StockData {
   date: string;

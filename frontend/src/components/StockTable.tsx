@@ -12,8 +12,8 @@ interface StockTableTypes {
 
 export const StockTable = () => {
   const [stocks, setStocks] = useState<StockTableTypes[]>([]);
-  const [sortMethod, setSortMethod] = useState(0);
-  const [sortCurrent, setSortCurrent] = useState("");
+  //const [sortMethod, setSortMethod] = useState(0);
+  //const [sortCurrent, setSortCurrent] = useState("");
 
   useEffect(() => {
     console.log("FUTURE API CALL");
