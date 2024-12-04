@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
-import { StockTable} from "./components/StockTable";
+import { StockTable } from "./components/StockTable";
 import "./App.css";
 
 interface StockData {
@@ -17,15 +17,15 @@ interface Ticker {
 }
 
 interface FinancialData {
-  Symbol: string;
-  MarketCapitalization: number;
-  PERatio: number;
-  Week52High: number;
-  Week52Low: number;
-  DividendYield: number;
-  Beta: number;
-  EPS: number;
-  ProfitMargin: number;
+  Symbol?: string;
+  MarketCapitalization?: number;
+  PERatio?: number;
+  Week52High?: number;
+  Week52Low?: number;
+  DividendYield?: number;
+  Beta?: number;
+  EPS?: number;
+  ProfitMargin?: number;
 }
 
 function App() {
@@ -36,6 +36,7 @@ function App() {
   const [financialData, setFinancialData] = useState<FinancialData | null>(null);
   const [loading, setLoading] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
+  const [showTable, setShowTable] = useState(false);
 
   // Fetch symbols as user types
   useEffect(() => {
@@ -127,7 +128,8 @@ function App() {
     }
   }, [selectedTicker]);
 
-  const formatMarketCap = (marketCap: number) => {
+  const formatMarketCap = (marketCap?: number) => {
+    if (!marketCap) return 'N/A';
     if (marketCap >= 1e12) {
       return `$${(marketCap / 1e12).toFixed(2)}T`;
     } else if (marketCap >= 1e9) {
@@ -139,14 +141,19 @@ function App() {
     }
   };
 
-  const formatPercentage = (value: number) => {
-    return `${(value * 100).toFixed(2)}%`;
+  const formatPercentage = (value?: number) => {
+    return value ? `${(value * 100).toFixed(2)}%` : 'N/A';
+  };
+
+  const formatNumber = (value?: number, prefix: string = '') => {
+    return value ? `${prefix}${value.toFixed(2)}` : 'N/A';
   };
 
   const handleReset = () => {
     setSearchQuery("");
     setSelectedTicker(null);
     setShowAbout(false);
+    setShowTable(false);
   };
 
   const AboutPage = () => (
@@ -161,7 +168,6 @@ function App() {
         </p>
         <p>
           Features:<br />
-          • Real-time stock price tracking<br />
           • Historical price data visualization<br />
           • Company information and key statistics<br />
           • User-friendly search interface
@@ -185,33 +191,58 @@ function App() {
           >
             TraderInfo
           </h1>
-          <div className="search-container">
-            <input
-              type="text"
-              placeholder="Search stocks..."
-              className="search-input"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search className="search-icon cursor-pointer" size={20} />
+          <div className="nav-buttons">
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search stocks..."
+                className="search-input"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+              <Search className="search-icon cursor-pointer" size={20} />
+            </div>
+            <button 
+              className="table-button"
+              onClick={() => {
+                setShowTable(true);
+                setShowAbout(false);
+                setSelectedTicker(null);
+                setSearchQuery("");
+              }}
+            >
+              Market Overview
+            </button>
+            <button 
+              className="about-button"
+              onClick={() => {
+                setShowAbout(true);
+                setSelectedTicker(null);
+                setSearchQuery("");
+                setShowTable(false);
+              }}
+            >
+              About
+            </button>
           </div>
-          <button 
-            className="about-button"
-            onClick={() => {
-              setShowAbout(true);
-              setSelectedTicker(null);
-              setSearchQuery("");
-            }}
-          >
-            About
-          </button>
         </div>
       </nav>
-      
-      {<StockTable/>}
 
       <main className="main-content">
-        {showAbout ? (
+        {showTable ? (
+          <div className="table-page">
+            <div className="table-header">
+              <h2>Market Overview</h2>
+              <button 
+                onClick={handleReset}
+                className="back-button"
+              >
+                Back to Search
+              </button>
+            </div>
+            <StockTable />
+          </div>
+        ) : showAbout ? (
           <AboutPage />
         ) : loading ? (
           <div className="text-center p-4">Loading...</div>
@@ -266,19 +297,19 @@ function App() {
                     <div className="stat-row">
                       <span className="stat-label">P/E Ratio</span>
                       <span className="stat-value">
-                        {financialData.PERatio.toFixed(2)}
+                        {formatNumber(financialData.PERatio)}
                       </span>
                     </div>
                     <div className="stat-row">
                       <span className="stat-label">52 Week High</span>
                       <span className="stat-value">
-                        ${financialData.Week52High.toFixed(2)}
+                        {formatNumber(financialData.Week52High, '$')}
                       </span>
                     </div>
                     <div className="stat-row">
                       <span className="stat-label">52 Week Low</span>
                       <span className="stat-value">
-                        ${financialData.Week52Low.toFixed(2)}
+                        {formatNumber(financialData.Week52Low, '$')}
                       </span>
                     </div>
                     <div className="stat-row">
@@ -290,13 +321,13 @@ function App() {
                     <div className="stat-row">
                       <span className="stat-label">Beta</span>
                       <span className="stat-value">
-                        {financialData.Beta.toFixed(2)}
+                        {formatNumber(financialData.Beta)}
                       </span>
                     </div>
                     <div className="stat-row">
                       <span className="stat-label">EPS</span>
                       <span className="stat-value">
-                        ${financialData.EPS.toFixed(2)}
+                        {formatNumber(financialData.EPS, '$')}
                       </span>
                     </div>
                     <div className="stat-row">
