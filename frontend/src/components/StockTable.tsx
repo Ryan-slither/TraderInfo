@@ -76,7 +76,7 @@ export const StockTable = () => {
         return;
       }
 
-      const iterations = 100;
+      const iterations = 1000;
       let quickSortTotalTime = 0;
       let heapSortTotalTime = 0;
 

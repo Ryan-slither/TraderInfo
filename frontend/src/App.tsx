@@ -35,7 +35,9 @@ function App() {
   const [selectedTicker, setSelectedTicker] = useState<Ticker | null>(null);
   const [tickers, setTickers] = useState<Ticker[]>([]);
   const [stockData, setStockData] = useState<StockData[]>([]);
-  const [financialData, setFinancialData] = useState<FinancialData | null>(null);
+  const [financialData, setFinancialData] = useState<FinancialData | null>(
+    null
+  );
   const [loading, setLoading] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showTable, setShowTable] = useState(false);
@@ -92,6 +94,14 @@ function App() {
     return () => clearTimeout(timeoutId);
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (searchQuery.trim()) {
+      setSelectedTicker(null);
+      setShowAbout(false);
+      setShowTable(false);
+    }
+  }, [searchQuery]);
+
   // Fetch stock details and financial data when a ticker is selected
   useEffect(() => {
     const fetchStockData = async (symbol: string) => {
@@ -131,7 +141,7 @@ function App() {
   }, [selectedTicker]);
 
   const formatMarketCap = (marketCap?: number) => {
-    if (!marketCap) return 'N/A';
+    if (!marketCap) return "N/A";
     if (marketCap >= 1e12) {
       return `$${(marketCap / 1e12).toFixed(2)}T`;
     } else if (marketCap >= 1e9) {
@@ -144,11 +154,11 @@ function App() {
   };
 
   const formatPercentage = (value?: number) => {
-    return value ? `${(value * 100).toFixed(2)}%` : 'N/A';
+    return value ? `${(value * 100).toFixed(2)}%` : "N/A";
   };
 
-  const formatNumber = (value?: number, prefix: string = '') => {
-    return value ? `${prefix}${value.toFixed(2)}` : 'N/A';
+  const formatNumber = (value?: number, prefix: string = "") => {
+    return value ? `${prefix}${value.toFixed(2)}` : "N/A";
   };
 
   const handleReset = () => {
@@ -163,21 +173,23 @@ function App() {
       <h2 className="about-title">About TraderInfo</h2>
       <div className="about-content">
         <p>
-          TraderInfo is a comprehensive stock market information platform that provides
-          real-time stock data and analysis tools for investors. Our platform integrates
-          data from Alpha Vantage API and historical S&P 500 stock data to give you
-          accurate and timely market insights.
+          TraderInfo is a comprehensive stock market information platform that
+          provides real-time stock data and analysis tools for investors. Our
+          platform integrates data from Alpha Vantage API and historical S&P 500
+          stock data to give you accurate and timely market insights.
         </p>
         <p>
-          Features:<br />
-          • Historical price data visualization<br />
-          • Company information and key statistics<br />
-          • User-friendly search interface
+          Features:
+          <br />
+          • Historical price data visualization
+          <br />
+          • Company information and key statistics
+          <br />• User-friendly search interface
         </p>
         <p>
-          Built with modern technologies including React, Node.js, MongoDB, and Docker,
-          TraderInfo aims to provide a seamless experience for both novice and
-          experienced investors.
+          Built with modern technologies including React, Node.js, MongoDB, and
+          Docker, TraderInfo aims to provide a seamless experience for both
+          novice and experienced investors.
         </p>
       </div>
     </div>
@@ -187,10 +199,7 @@ function App() {
     <div className="app-container">
       <nav className="navbar">
         <div className="navbar-content">
-          <h1 
-            className="logo cursor-pointer" 
-            onClick={handleReset}
-          >
+          <h1 className="logo cursor-pointer" onClick={handleReset}>
             TraderInfo
           </h1>
           <div className="nav-buttons">
@@ -204,7 +213,7 @@ function App() {
               />
               <Search className="search-icon cursor-pointer" size={20} />
             </div>
-            <button 
+            <button
               className="table-button"
               onClick={() => {
                 setShowTable(true);
@@ -215,7 +224,7 @@ function App() {
             >
               Market Overview
             </button>
-            <button 
+            <button
               className="about-button"
               onClick={() => {
                 setShowAbout(true);
@@ -235,10 +244,7 @@ function App() {
           <div className="table-page">
             <div className="table-header">
               <h2>Market Overview</h2>
-              <button 
-                onClick={handleReset}
-                className="back-button"
-              >
+              <button onClick={handleReset} className="back-button">
                 Back to Search
               </button>
             </div>
@@ -311,13 +317,13 @@ function App() {
                     <div className="stat-row">
                       <span className="stat-label">52 Week High</span>
                       <span className="stat-value">
-                        {formatNumber(financialData.Week52High, '$')}
+                        {formatNumber(financialData.Week52High, "$")}
                       </span>
                     </div>
                     <div className="stat-row">
                       <span className="stat-label">52 Week Low</span>
                       <span className="stat-value">
-                        {formatNumber(financialData.Week52Low, '$')}
+                        {formatNumber(financialData.Week52Low, "$")}
                       </span>
                     </div>
                     <div className="stat-row">
@@ -335,7 +341,7 @@ function App() {
                     <div className="stat-row">
                       <span className="stat-label">EPS</span>
                       <span className="stat-value">
-                        {formatNumber(financialData.EPS, '$')}
+                        {formatNumber(financialData.EPS, "$")}
                       </span>
                     </div>
                     <div className="stat-row">
