@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Search } from "lucide-react";
 import { StockChart } from "./components/StockChart";
 import { TickerCard } from "./components/TickerCard";
+import { StockTable } from "./components/StockTable";
 import "./App.css";
 
 interface StockData {
@@ -119,7 +120,6 @@ function App() {
         </p>
         <p>
           Features:<br />
-          • Real-time stock price tracking<br />
           • Historical price data visualization<br />
           • Company information and key statistics<br />
           • User-friendly search interface
@@ -165,6 +165,8 @@ function App() {
           </button>
         </div>
       </nav>
+
+      {<StockTable/>}
 
       <main className="main-content">
         {showAbout ? (
