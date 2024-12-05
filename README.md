@@ -1,5 +1,5 @@
 # TraderInfo Project
-##Steps to Run the Project
+## Steps to Run the Project
 1. Clone the github repository onto your local machine
 2. Download Docker Desktop https://docs.docker.com/desktop/setup/install/windows-install/
 4. In the root directory of the TraderInfo project, create a .env file
